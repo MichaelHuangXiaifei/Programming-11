@@ -82,8 +82,11 @@ def rect_in_circle(rectangle, circle):
 
 
 def rect_circle_overlap(rectangle, circle):
-    rectangle.corner.move(rectangle.corner.x - (- rectangle.width / 2), (- rectangle.height / 2))
-
+    if rectangle.corner.x - circle.r <= circle.center.x <= rectangle.corner.x + rectangle.width + circle.r and \
+            rectangle.corner.y - circle.r < circle.r <= rectangle.corner.y + rectangle.height + circle.r:
+        return True
+    else:
+        return False
 
 
 circle0 = Circle(Point(5, 5), 0.1)

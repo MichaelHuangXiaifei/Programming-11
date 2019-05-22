@@ -40,10 +40,24 @@ class Rectangle:
     length = float()
     width = float()
 
+    def area(self):
+        return self.length * self.width
+
     def __init__(self, corner=Point(0, 0), length=0, width=0):
         self.corner = corner
         self.length = length
         self.width = width
+
+
+class Circle:
+    """Represents a circle. attributes: center point, radius. """
+
+    def __init__(self, center=Point(0, 0), r=0):
+        self.center = center
+        self.r = r
+
+    def area(self):
+        return math.pi * self.r ** 2
 
 
 origin = Point(0, 0)
@@ -57,3 +71,5 @@ distance_a_b.measure(point_a, point_b)
 
 rectangle_a = Rectangle(Point(0, 0), 10, 10)
 print(rectangle_a.corner)
+
+print(rectangle_a.area())
