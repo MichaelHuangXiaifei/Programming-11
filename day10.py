@@ -59,17 +59,29 @@ class Circle:
     def area(self):
         return math.pi * self.r ** 2
 
+    def increase_area(self, area):
+        r2 = math.sqrt((area + math.pi * self.r ** 2) / math.pi)
+        self.r = r2
 
-origin = Point(0, 0)
+    def multiply_area(self, times):
+        self.r *= math.sqrt(times)
 
-point_a = Point(1, 1)
+class Time:
+    """Represents the time of day. attributes: hour, minute, second"""
 
-point_b = Point(3, 4)
+    def __init__(self, hour=0, minute=0, second=0):
+        self.hour = hour
+        self.minute = minute
+        self.second = second
 
-distance_a_b = Diatance()
-distance_a_b.measure(point_a, point_b)
+    def __str__(self):
+        return '%.2d:%.2d:%.2d' % (self.hour, self.minute, self.second)
 
-rectangle_a = Rectangle(Point(0, 0), 10, 10)
-print(rectangle_a.corner)
 
-print(rectangle_a.area())
+def is_after(t1, t2):
+    t1_s = t1.hour * 3600 + t1.minute * 60 + t1.second
+    t2_s = t2.hour * 3600 + t2.minute * 60 + t2.second
+
+
+time0 = Time(10, 1, 2)
+print(time0)
