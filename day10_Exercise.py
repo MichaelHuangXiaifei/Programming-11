@@ -67,18 +67,18 @@ def rect_in_circle(rectangle, circle):
     return False
 
 
-# def rect_circle_overlap(rectangle, circle):
-#     point = Point()
-#     point.move(rectangle.corner.x + rectangle.width, rectangle.corner.y + rectangle.height)
-#     if rectangle.corner.x < circle.center.x < point.x and \
-#             rectangle.corner.y < circle.center.y < point.y:
-#         return True
-#     for x in range(rectangle.corner.x, rectangle.corner.x + rectangle.width + 1):
-#         for y in range(rectangle.corner.y, rectangle.corner.y + rectangle.height + 1):
-#             point.set_coordinate(x, y)
-#             if point_in_circle(circle, point):
-#                 return True
-#     return False
+def rect_circle_overlap_wrong(rectangle, circle):
+    point = Point()
+    point.move(rectangle.corner.x + rectangle.width, rectangle.corner.y + rectangle.height)
+    if rectangle.corner.x < circle.center.x < point.x and \
+            rectangle.corner.y < circle.center.y < point.y:
+        return True
+    for x in range(rectangle.corner.x, rectangle.corner.x + rectangle.width + 1):
+        for y in range(rectangle.corner.y, rectangle.corner.y + rectangle.height + 1):
+            point.set_coordinate(x, y)
+            if point_in_circle(circle, point):
+                return True
+    return False
 
 
 def rect_circle_overlap(rectangle, circle):
