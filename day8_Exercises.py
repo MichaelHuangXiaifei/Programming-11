@@ -212,13 +212,13 @@ print('8.10')
 for first_word in vocabularyList:
     for second_word in vocabularyList:
         if first_word == second_word[::-1]:
-            print(" " * 10, first_word, second_word)
-        print(first_word, second_word)
+            print(first_word, second_word)
 
 # 8.11
 print('8.11')
 
 
+# .1
 def interlocked_words():
     fin = open('words.txt')
     for a in fin:
@@ -238,3 +238,31 @@ def interlocked_words():
 
 
 interlocked_words()
+
+
+# .2
+def three_way_interlocked_words():
+    fin = open('words.txt')
+    for a in fin:
+        word = a.strip()
+        i = 0
+        word1 = ''
+        while i < len(word):
+            word1 += word[i]
+            i += 3
+        i = 1
+        word2 = ''
+        while i < len(word):
+            word2 += word[i]
+            i += 3
+        word3 = ''
+        while i < len(word):
+            word3 += word[i]
+            i += 3
+        if in_bisect(vocabularyList, word1) is not None and\
+                in_bisect(vocabularyList, word2) is not None and \
+                in_bisect(vocabularyList, word3) is not None:
+            print(word, word1, word2, word3)
+
+
+three_way_interlocked_words()
