@@ -23,7 +23,7 @@ class Card:
             return True
         if self.suit > other.suit:
             return False
-        # suits are the same... cheak ranks
+        # suits are the same... check ranks
         return self.rank < other.rank
 
     def __str__(self):
@@ -37,8 +37,11 @@ class Card:
 class Deck:
     """Represents a set of cards"""
 
-    def pop_card(self):
+    def pop_card_from_top(self):
         return self.cards.pop(0)
+
+    def random_pop_card(self):
+        return self.cards.pop(random.randint(0, len(self.cards) - 1))
 
     def add_card(self, card):
         self.cards.append(card)
@@ -47,10 +50,6 @@ class Deck:
         random.shuffle(self.cards)
 
     def sort(self):
-        # for i in range(len(self.cards) - 1):  # 这个循环负责设置冒泡排序进行的次数
-        #     for j in range(len(self.cards) - i - 1):  # j为列表下标
-        #         if self.cards[j].suit > nums[j + 1].suit:
-        #             nums[j], nums[j + 1] = nums[j + 1], nums[j]
         self.cards.sort()
 
     def __str__(self):
@@ -67,17 +66,25 @@ class Deck:
                 self.cards.append(card)
 
 
-Queen_of_diamonds = Card(1, 12)
+class Player:
+    """Represents a set of cards on player's hand"""
 
-Jack_of_Hearts = Card(2, 11)
+    def __init__(self):
+        self.cards = []
 
-# Deck
-card1 = Card(2, 11)
-card2 = Card(2, 12)
 
+def handout_cards(deck, player1, player2):
+    while deck.cards != []:
+        player1.cards.append(deck.pop_card_from_top())
+        player2.cards.append(deck.pop_card_from_top())
+
+
+player1 = Player()
+player2 = Player()
 deck = Deck()
 
 deck.shuffle()
-print(deck)
-deck.sort()
-print(deck)
+
+handout_cards(deck, player1, player2)
+
+print(player1.cards)
