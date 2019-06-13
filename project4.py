@@ -73,12 +73,12 @@ class Deck:
         """
         self.cards.remove(card)
 
-    def pop_card(self, i=-1):
+    def pop_card(self, position=-1):
         """Removes and returns a card from the deck.
 
         i: index of the card to pop; by default, pops the last card.
         """
-        return self.cards.pop(i)
+        return self.cards.pop(position)
 
     def shuffle(self):
         """Shuffles the cards in this deck."""
@@ -88,46 +88,71 @@ class Deck:
         """Sorts the cards in ascending order."""
         self.cards.sort()
 
-    def move_cards(self, hand, num):
+    def move_cards(self, hand_name, num):
         """Moves the given number of cards from the deck into the Hand.
 
         hand: destination Hand object
         num: integer number of cards to move
         """
-        for i in range(num):
-            hand.add_card(self.pop_card())
+        for num in range(num):
+            hand_name.add_card(self.pop_card())
 
 
 class Hand(Deck):
-    """Represents a hand of playing cards."""
-
-    def __init__(self, label=""):
-        self.cards = []
-        self.label = label
-
-
-class PokerHand(Hand):
     """Represents a poker hand."""
 
-    def suit_hist(self):
-        """Builds a histogram of the suits that appear in the hand.
-
-        Stores the result in attribute suits.
-        """
-        self.suits = {}
-        for card in self.cards:
-            self.suits[card.suit] = self.suits.get(card.suit, 0) + 1
+    # def suit_hist(self):
+    #     """Builds a histogram of the suits that appear in the hand.
+    #
+    #     Stores the result in attribute suits.
+    #     """
+    #     self.suits = {}
+    #     for card in self.cards:
+    #         self.suits[card.suit] = self.suits.get(card.suit, 0) + 1
 
     def has_flush(self):
         """Returns True if the hand has a flush, False otherwise.
 
         Note that this works correctly for hands with more than 5 cards.
         """
-        self.suit_hist()
-        for val in self.suits.values():
+        suit_hist = {}
+        for card in self.cards:
+            suit_hist[card.suit] = suit_hist.get(card.suit, 0) + 1
+        for val in suit_hist.values():
             if val >= 5:
                 return True
         return False
+
+    def has_pair(self):
+        """Returns True if the hand has a pair, False otherwise."""
+        rank_hist = {}
+        for card in self.cards:
+            rank_hist[card.rank] = rank_hist.get(card.rank, 0) + 1
+        for val in rank_hist.values():
+            if val == 2:
+                return True
+        return False
+
+    def has_two_pair(self):
+        """Returns True if the hand has two pair, False otherwise."""
+        rank_hist = dict()
+        rank_hist_hist = dict()
+        for card in self.cards:
+            rank_hist[card.rank] = rank_hist.get(card.rank, 0) + 1
+        for rank in rank_hist.values():
+            rank_hist_hist[rank] = rank_hist.get(rank, 0) + 1
+        for val in rank_hist_hist.values():
+            if val == 2:
+                return True
+        return False
+
+    def __str__(self):
+        for card in self.cards:
+
+
+    def __init__(self, label=""):
+        self.cards = []
+        self.label = label
 
 
 deck = Deck()
@@ -135,9 +160,8 @@ deck.shuffle()
 
 # deal the cards and classify the hands
 for i in range(10):
-    hand = PokerHand()
+    hand = Hand()
     deck.move_cards(hand, 5)
     hand.sort()
     # print(hand)
-    print(hand.has_flush())
-    print("")
+    print(hand.has_two_pair())
