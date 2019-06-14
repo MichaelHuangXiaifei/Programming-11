@@ -1,4 +1,3 @@
-# Texas Hold’em poker
 import random
 
 
@@ -146,22 +145,54 @@ class Hand(Deck):
                 return True
         return False
 
-    # def __str__(self):
-    #     for card in self.cards:
+    def __str__(self):
+        return "score:%d, win_round:%d" % (self.score, self.win_round)
 
-
-    def __init__(self, label=""):
+    def __init__(self):
         self.cards = []
-        self.label = label
+        self.score = 0
+        self.win_round = 0
 
 
 deck = Deck()
 deck.shuffle()
 
-# deal the cards and classify the hands
-for i in range(10):
-    hand = Hand()
-    deck.move_cards(hand, 5)
-    hand.sort()
-    # print(hand)
-    print(hand.has_two_pair())
+player1 = Hand()
+player2 = Hand()
+
+for rounds in range(3):
+
+    deck.move_cards(player1, 5)
+    deck.move_cards(player2, 5)
+
+    for time in range(5):
+        player1.shuffle()
+        player2.shuffle()
+
+        player1_card = player1.pop_card()
+        player2_card = player2.pop_card()
+
+        if player1_card > player2_card:
+            player1.score += 1
+        elif player2_card > player1_card:
+            player2.score += 1
+
+        deck.add_card(player1_card)
+        del player1_card
+        deck.add_card(player2_card)
+        del player2_card
+
+    if player1.score >= 3:
+        player1.win_round += 1
+    elif player2.score >= 3:
+        player2.win_round += 1
+
+    player1.score = 0
+    player2.score = 0
+
+if player1.win_round > player2.win_round:
+    print("player 1 win")
+elif player2.win_round > player1.win_round:
+    print("player 2 win")
+else:
+    print("tie(should never appear)")
