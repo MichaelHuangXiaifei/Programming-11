@@ -100,6 +100,14 @@ class Deck:
 class Hand(Deck):
     """Represents a poker hand."""
 
+    def __str__(self):
+        return "score:%d, win_round:%d" % (self.score, self.win_round)
+
+    def __init__(self):
+        self.cards = []
+        self.score = 0
+        self.win_round = 0
+
     # def suit_hist(self):
     #     """Builds a histogram of the suits that appear in the hand.
     #
@@ -144,14 +152,6 @@ class Hand(Deck):
             if val == 2:
                 return True
         return False
-
-    def __str__(self):
-        return "score:%d, win_round:%d" % (self.score, self.win_round)
-
-    def __init__(self):
-        self.cards = []
-        self.score = 0
-        self.win_round = 0
 
 
 deck = Deck()
