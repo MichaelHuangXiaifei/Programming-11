@@ -101,6 +101,9 @@ class Deck:
 class Hand(Deck):
     """Represents a poker hand."""
 
+    classification = ["pair", "two pair", "three of a kind", "straight",
+                      "flush", "full house", "four of a kind", "straight flush"]
+
     # def suit_hist(self):
     #     """Builds a histogram of the suits that appear in the hand.
     #
@@ -144,19 +147,38 @@ class Hand(Deck):
         return False
 
     def has_straight(self):
-        rank_hist = dict()
-        for card in self.cards:
-            rank_hist[card.suit] = rank_hist.get(card.rank, 0) + 1
-        if rank_hist.get(13, 0) >= 1:
-            if rank_hist.get(1, 0) >= 1:
-                rank_hist[14] = rank_hist[1]
-                del rank_hist[1]
         rank_list = list()
-        for rank in rank_hist:
-            for time in range(rank_hist[rank]):
-                rank_list.append(rank)
-        rank_list.shuffle()
-
+        accumulator = 0
+        for card in self.cards:
+            rank_list.append(card.rank)
+        rank_list.sort()
+        for times in range(4):
+            if times == 3 and rank_list[times + 1] == 1:
+                rank_list[times + 1] = 14
+            if rank_list[times] + 1 == rank_list[times + 1]:
+                accumulator += 1
+        if accumulator >= 4:
+            return True
+        return False
+        # rank_hist = dict()
+        # accumulator = 0
+        # for card in self.cards:
+        #     rank_hist[card.suit] = rank_hist.get(card.rank, 0) + 1
+        # if rank_hist.get(13, 0) >= 1:
+        #     if rank_hist.get(1, 0) >= 1:
+        #         rank_hist[14] = rank_hist[1]
+        #         del rank_hist[1]
+        # rank_list = list()
+        # for rank in rank_hist:
+        #     for time in range(rank_hist[rank]):
+        #         rank_list.append(rank)
+        # rank_list.sort()
+        # for rank in range(len(rank_list) - 1):
+        #     if rank_list[rank] + 1 == rank_list[rank + 1]:
+        #         accumulator += 1
+        # if accumulator >= 4:
+        #     return True
+        # return False
 
     def has_flush(self):
         """Returns True if the hand has a flush, False otherwise.
@@ -193,23 +215,82 @@ class Hand(Deck):
         return False
 
     def has_straight_flush(self):
-        pass
+        if self.has_straight():
+            if self.has_flush():
+                return True
+        return False
+
+    def classify(self):
+        if self.has_straight_flush():
+            self.label = Hand.classification[7]
+        elif self.has_four_of_a_kind():
+            self.label = Hand.classification[6]
+        elif self.has_full_house():
+            self.label = Hand.classification[5]
+        elif self.has_flush():
+            self.label = Hand.classification[4]
+        elif self.has_straight():
+            self.label = Hand.classification[3]
+        elif self.has_three_of_a_kind():
+            self.label = Hand.classification[2]
+        elif self.has_two_pair():
+            self.label = Hand.classification[1]
+        elif self.has_pair():
+            self.label = Hand.classification[0]
 
     # def __str__(self):
     #     for card in self.cards:
 
-    def __init__(self, label=""):
+    def __init__(self, label="high card"):
         self.cards = []
         self.label = label
 
 
-deck = Deck()
-deck.shuffle()
+# # deal the cards and classify the hands
+# for i in range(10):
+#     hand = Hand()
+#     deck.move_cards(hand, 5)
+#     hand.sort()
+#     # print(hand)
+#     print(hand.has_two_pair())
 
-# deal the cards and classify the hands
-for i in range(10):
-    hand = Hand()
-    deck.move_cards(hand, 5)
-    hand.sort()
-    # print(hand)
-    print(hand.has_two_pair())
+
+def proportion(hist):
+    total = 0
+    for value in hist.values():
+        total += value
+    if "high card" in hist:
+        print("high card: %.3f%%" % (hist["high card"] / total * 100))
+    if "pair" in hist:
+        print("pair: %.3f%%" % (hist["pair"] / total * 100))
+    if "two pair" in hist:
+        print("two pair: %.3f%%" % (hist["two pair"] / total * 100))
+    if "three of a kind" in hist:
+        print("three of a kind: %.3f%%" % (hist["three of a kind"] / total * 100))
+    if "straight" in hist:
+        print("straight: %.3f%%" % (hist["straight"] / total * 100))
+    if "flush" in hist:
+        print("flush: %.3f%%" % (hist["flush"] / total * 100))
+    if "full house" in hist:
+        print("full house: %.3f%%" % (hist["full house"] / total * 100))
+    if "four of a kind" in hist:
+        print("four of a kind: %.3f%%" % (hist["four of a kind"] / total * 100))
+    if "straight flush" in hist:
+        print("straight flush: %.3f%%" % (hist["straight flush"] / total * 100))
+
+
+classification_hist = dict()
+
+for i in range(1000000):
+    deck = Deck()
+    deck.shuffle()
+    hand0 = Hand()
+    deck.move_cards(hand0, 5)
+    hand0.classify()
+    # if hand0.label == "pair":
+    #     print(hand0)
+    classification_hist[hand0.label] = classification_hist.get(hand0.label, 0) + 1
+    del hand0
+    del deck
+print(classification_hist)
+proportion(classification_hist)
