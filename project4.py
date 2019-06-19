@@ -119,21 +119,21 @@ class Hand(Deck):
         for card in self.cards:
             rank_hist[card.rank] = rank_hist.get(card.rank, 0) + 1
         for val in rank_hist.values():
-            if val == 2:
+            if val >= 2:
                 return True
         return False
 
     def has_two_pair(self):
         """Returns True if the hand has two pair, False otherwise."""
         rank_hist = dict()
-        rank_hist_hist = dict()
+        times = 0
         for card in self.cards:
             rank_hist[card.rank] = rank_hist.get(card.rank, 0) + 1
-        for rank in rank_hist.values():
-            rank_hist_hist[rank] = rank_hist.get(rank, 0) + 1
-        for val in rank_hist_hist.values():
-            if val == 2:
-                return True
+        for val in rank_hist.values():
+            if val >= 2:
+                times += 1
+        if times >= 2:
+            return True
         return False
 
     def has_three_of_a_kind(self):
@@ -260,28 +260,28 @@ def proportion(hist):
     for value in hist.values():
         total += value
     if "high card" in hist:
-        print("high card: %.3f%%" % (hist["high card"] / total * 100))
+        print("high card: %.5f%%" % (hist["high card"] / total * 100))
     if "pair" in hist:
-        print("pair: %.3f%%" % (hist["pair"] / total * 100))
+        print("pair: %.5f%%" % (hist["pair"] / total * 100))
     if "two pair" in hist:
-        print("two pair: %.3f%%" % (hist["two pair"] / total * 100))
+        print("two pair: %.5f%%" % (hist["two pair"] / total * 100))
     if "three of a kind" in hist:
-        print("three of a kind: %.3f%%" % (hist["three of a kind"] / total * 100))
+        print("three of a kind: %.5f%%" % (hist["three of a kind"] / total * 100))
     if "straight" in hist:
-        print("straight: %.3f%%" % (hist["straight"] / total * 100))
+        print("straight: %.5f%%" % (hist["straight"] / total * 100))
     if "flush" in hist:
-        print("flush: %.3f%%" % (hist["flush"] / total * 100))
+        print("flush: %.5f%%" % (hist["flush"] / total * 100))
     if "full house" in hist:
-        print("full house: %.3f%%" % (hist["full house"] / total * 100))
+        print("full house: %.5f%%" % (hist["full house"] / total * 100))
     if "four of a kind" in hist:
-        print("four of a kind: %.3f%%" % (hist["four of a kind"] / total * 100))
+        print("four of a kind: %.5f%%" % (hist["four of a kind"] / total * 100))
     if "straight flush" in hist:
-        print("straight flush: %.3f%%" % (hist["straight flush"] / total * 100))
+        print("straight flush: %.5f%%" % (hist["straight flush"] / total * 100))
 
 
 classification_hist = dict()
 
-for i in range(1000000):
+for i in range(100000):
     deck = Deck()
     deck.shuffle()
     hand0 = Hand()
