@@ -152,13 +152,33 @@ class Hand(Deck):
         for card in self.cards:
             rank_list.append(card.rank)
         rank_list.sort()
-        for times in range(4):
-            if times == 3 and rank_list[times + 1] == 1:
-                rank_list[times + 1] = 14
-            if rank_list[times] + 1 == rank_list[times + 1]:
-                accumulator += 1
-        if accumulator >= 4:
-            return True
+        if 1 not in rank_list:
+            for times in range(4):
+                # if times == 3 and rank_list[times + 1] == 1:
+                #     rank_list[times + 1] = 14
+                if rank_list[times] + 1 == rank_list[times + 1]:
+                    accumulator += 1
+            if accumulator >= 4:
+                return True
+        else:
+            for times in range(4):
+                # if times == 3 and rank_list[times + 1] == 1:
+                #     rank_list[times + 1] = 14
+                if rank_list[times] + 1 == rank_list[times + 1]:
+                    accumulator += 1
+            if accumulator >= 4:
+                return True
+            accumulator = 0
+            for rank in range(len(rank_list)):
+                if rank_list[rank] == 1:
+                    rank_list[rank] = 14
+            for times in range(4):
+                # if times == 3 and rank_list[times + 1] == 1:
+                #     rank_list[times + 1] = 14
+                if rank_list[times] + 1 == rank_list[times + 1]:
+                    accumulator += 1
+            if accumulator >= 4:
+                return True
         return False
         # rank_hist = dict()
         # accumulator = 0
@@ -281,7 +301,7 @@ def proportion(hist):
 
 classification_hist = dict()
 
-for i in range(100000):
+for i in range(2598960):
     deck = Deck()
     deck.shuffle()
     hand0 = Hand()
