@@ -312,5 +312,5 @@ for i in range(2598960):
     classification_hist[hand0.label] = classification_hist.get(hand0.label, 0) + 1
     del hand0
     del deck
-print(classification_hist)
+# print(classification_hist)
 proportion(classification_hist)
