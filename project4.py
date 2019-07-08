@@ -102,7 +102,7 @@ class Hand(Deck):
     """Represents a poker hand."""
 
     classification = ["pair", "two pair", "three of a kind", "straight",
-                      "flush", "full house", "four of a kind", "straight flush"]
+                      "flush", "full house", "four of a kind", "straight flush", "royal flush"]
 
     # def suit_hist(self):
     #     """Builds a histogram of the suits that appear in the hand.
@@ -235,13 +235,25 @@ class Hand(Deck):
         return False
 
     def has_straight_flush(self):
+        """Returns True if the hand has straight flush, False otherwise."""
         if self.has_straight():
             if self.has_flush():
                 return True
         return False
 
+    def has_royal_flush(self):
+        """Returns True if the hand has royal flush, False otherwise."""
+        if self.has_straight():
+            if self.has_flush():
+                for card in self.cards:
+                    if card.rank == 1:
+                        return True
+
     def classify(self):
-        if self.has_straight_flush():
+        """Check the hand and change it label"""
+        if self.has_royal_flush():
+            self.label = Hand.classification[8]
+        elif self.has_straight_flush():
             self.label = Hand.classification[7]
         elif self.has_four_of_a_kind():
             self.label = Hand.classification[6]
@@ -297,11 +309,13 @@ def proportion(hist):
         print("four of a kind: %.5f%%" % (hist["four of a kind"] / total * 100))
     if "straight flush" in hist:
         print("straight flush: %.5f%%" % (hist["straight flush"] / total * 100))
+    if "royal flush" in hist:
+        print("royal flush: %.5f%%" % (hist["royal flush"] / total * 100))
 
 
 classification_hist = dict()
 
-for i in range(2598960):
+for i in range(2598960):  # 2598960
     deck = Deck()
     deck.shuffle()
     hand0 = Hand()
